@@ -25,15 +25,27 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User addOrUpdateProfile(Long userId, Profile profile) {
+    public User addOrUpdateProfile(Long userId, Profile profileData) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        profile.setUser(user);       // bind user in profile
-        user.setProfile(profile);    // bind profile in user
+        Profile profile = user.getProfile();
 
-        return userRepository.save(user);  // cascade persists profile
+        if (profile == null) {
+            // First-time add
+            profile = new Profile();
+        }
+
+        // Update fields
+        profile.setEmail(profileData.getEmail());
+        profile.setPhone(profileData.getPhone());
+        profile.setUser(user); // maintain reverse reference
+
+        user.setProfile(profile); // maintain direct reference
+
+        return userRepository.save(user); // will update the existing profile
     }
+
 
     public User addPostToUser(Long userId, Post post) {
         User user = userRepository.findById(userId)
