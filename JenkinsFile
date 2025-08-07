@@ -15,21 +15,29 @@ pipeline {
       }
     }
 
-    stage('Deploy with Docker Compose') {
-      steps {
-        // Clean up previous containers (optional)
-        sh 'docker-compose down || true'
-        sh 'docker-compose up -d --build'
-      }
-    }
+//     stage('Deploy with Docker Compose') {
+//       steps {
+//         // Clean up previous containers (optional)
+//         sh 'docker-compose down || true'
+//         sh 'docker-compose up -d --build'
+//       }
+//     }
+
+      stage('Deploy with Docker Compose') {
+            steps {
+              // Clean up previous containers (optional)
+              sh 'docker-compose --project-name springbootpipeline down || true'
+              sh 'docker-compose --project-name springbootpipeline up -d --build'
+            }
+          }
   }
 
   post {
     success {
-      echo '🚀 Deployment completed successfully.'
+      echo 'Deployment completed successfully.'
     }
     failure {
-      echo '❌ Deployment failed.'
+      echo 'Deployment failed.'
     }
   }
 }
