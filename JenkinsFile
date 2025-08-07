@@ -1,0 +1,41 @@
+pipeline {
+  agent any
+
+//   environment {
+//     // Define environment variables if needed
+//     DB_URL = "jdbc:mysql://mysql:3306/relation?useSSL=false"
+//     DB_USER = "user"
+//     DB_PASS = "password"
+//   }
+
+  stages {
+    stage('Clone Repository') {
+      steps {
+        git branch: 'main', url: 'https://github.com/your-user/your-repo.git'
+      }
+    }
+
+    stage('Build JAR') {
+      steps {
+        sh 'mvn clean install -DskipTests'
+      }
+    }
+
+    stage('Deploy with Docker Compose') {
+      steps {
+        // Clean up previous containers (optional)
+//         sh 'docker-compose down'
+        sh 'docker-compose up -d --build'
+      }
+    }
+  }
+
+  post {
+    success {
+      echo '🚀 Deployment completed successfully.'
+    }
+    failure {
+      echo '❌ Deployment failed.'
+    }
+  }
+}
