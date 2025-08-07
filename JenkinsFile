@@ -1,12 +1,6 @@
 pipeline {
   agent any
 
-//   environment {
-//     // Define environment variables if needed
-//     DB_URL = "jdbc:mysql://mysql:3306/relation?useSSL=false"
-//     DB_USER = "user"
-//     DB_PASS = "password"
-//   }
 
   stages {
     stage('Clone Repository') {
@@ -24,7 +18,7 @@ pipeline {
     stage('Deploy with Docker Compose') {
       steps {
         // Clean up previous containers (optional)
-//         sh 'docker-compose down'
+        sh 'docker-compose down || true'
         sh 'docker-compose up -d --build'
       }
     }
