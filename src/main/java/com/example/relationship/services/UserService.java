@@ -69,6 +69,10 @@ public class UserService {
         return userRepository.findPostsByUserId(userId);
     }
 
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
 //    public User createUser(User user) {
 //        // Set the relationship in reverse (Post → User)
 //        if (user.getPosts() != null) {
